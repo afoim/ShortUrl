@@ -11,7 +11,10 @@ const qrcode = require('qrcode');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const BASE_URL = `http://localhost:${PORT}`;
-const JWT_SECRET = 'your-secret-key-change-it-in-prod'; // Simple secret for demo
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || Buffer.byteLength(JWT_SECRET, 'utf8') < 32 || JWT_SECRET === 'your-secret-key-change-it-in-prod') {
+    throw new Error('JWT_SECRET must be a unique secret of at least 32 bytes');
+}
 
 // Middleware
 app.use(express.json());
